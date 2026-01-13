@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kit TikTok Shop em 1 Dia - Primeira Venda Rápida</title>
+    <!-- Scripts Externos -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .tiktok-cyan { color: #00f2ea; }
+        .tiktok-red { color: #ff0050; }
+        .cta-glow {
+            box-shadow: 0 0 20px rgba(255, 0, 80, 0.4);
+        }
+        @keyframes bounce-in {
+            0% { transform: translateY(100%); opacity: 0; }
+            70% { transform: translateY(-10%); opacity: 1; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        .animate-bounce-in {
+            animation: bounce-in 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        .hidden { display: none; }
+    </style>
+</head>
+<body class="bg-white text-gray-900 overflow-x-hidden">
+
+    <!-- 1. BARRA DE DESCONTO TOPO -->
+    <div class="bg-black text-white py-2 px-4 text-center text-xs md:text-sm font-bold border-b border-[#ff0050]/30 fixed top-0 left-0 right-0 z-[60]">
+        🔥 OFERTA ESPECIAL: <span class="text-[#00f2ea]">66% DE DESCONTO</span> NO KIT PREMIUM SOMENTE HOJE, <span id="current-date" class="uppercase text-[#ff0050]"></span>
+    </div>
+
+    <!-- 2. NOTIFICAÇÃO DE COMPRA -->
+    <div id="purchase-notification" class="fixed bottom-4 left-4 right-4 md:right-auto md:max-w-xs z-[100] hidden">
+        <div class="bg-white rounded-xl shadow-2xl p-4 flex items-center gap-4 border border-gray-100 animate-bounce-in">
+            <div class="bg-green-500 text-white p-2 rounded-full shrink-0">
+                <i data-lucide="shopping-bag"></i>
+            </div>
+            <div>
+                <p id="notif-name" class="text-xs font-bold text-gray-900"></p>
+                <p id="notif-action" class="text-[10px] text-gray-500"></p>
+            </div>
+            <button onclick="hideNotification()" class="ml-auto text-gray-400 hover:text-gray-600">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- 3. MODAL DE UPSELL (BÁSICO -> PREMIUM) -->
+    <div id="upsell-modal" class="fixed inset-0 z-[200] items-center justify-center p-4 bg-black/80 backdrop-blur-sm hidden flex">
+        <div class="bg-white w-full max-w-lg rounded-[2.5rem] overflow-hidden shadow-2xl animate-bounce-in">
+            <div class="bg-black text-white p-6 text-center relative">
+                <button onclick="closeUpsell()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                    <i data-lucide="x"></i>
+                </button>
+                <div class="inline-flex items-center gap-2 bg-[#ff0050] text-white px-4 py-1 rounded-full text-[10px] font-black uppercase mb-2">
+                    OFERTA EXCLUSIVA DE UPGRADE
+                </div>
+                <h2 class="text-2xl font-black uppercase leading-tight">VOCÊ VAI DEIXAR DINHEIRO NA MESA?</h2>
+            </div>
+            <div class="p-8 text-center">
+                <p class="text-gray-600 font-bold mb-6">
+                    A versão BÁSICA é boa, mas a <span class="text-[#ff0050]">PREMIUM</span> te dá os Vídeos Prontos e a Lista Secreta para vender 5x mais rápido.
+                </p>
+                
+                <div class="bg-gray-50 p-4 rounded-2xl mb-8 border-2 border-dashed border-green-500">
+                    <p class="text-xs font-black text-gray-400 uppercase mb-1">Oferta de Upgrade Hoje:</p>
+                    <div class="flex items-center justify-center gap-2">
+                        <span class="text-gray-400 line-through text-lg">R$ 32,90</span>
+                        <span class="text-3xl font-black text-green-600">R$ 24,90</span>
+                    </div>
+                    <p class="text-[10px] text-green-600 font-black uppercase mt-1 italic">Economize mais R$ 8,00 agora!</p>
+                </div>
+
+                <div class="space-y-4">
+                    <a href="https://go.tribopay.com.br/ixxcn" class="flex items-center justify-center gap-2 w-full bg-[#ff0050] text-white py-5 rounded-2xl font-black text-xl shadow-lg hover:scale-[1.02] transition-transform">
+                        SIM! QUERO O PREMIUM COM DESCONTO <i data-lucide="gift"></i>
+                    </a>
+                    <a href="https://go.tribopay.com.br/wwkrk" class="block text-gray-400 font-bold text-xs uppercase hover:underline">
+                        Não, quero continuar apenas com o Básico por R$ 9,90
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. HERO SECTION -->
+    <section class="pt-32 pb-16 px-6 bg-white overflow-hidden border-b border-gray-100">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="inline-flex items-center gap-2 bg-[#ff0050]/10 px-4 py-1.5 rounded-full mb-6 text-[10px] md:text-xs font-black text-[#ff0050] tracking-widest uppercase">
+                SISTEMA TESTADO E APROVADO NO BRASIL EM 2026
+            </div>
+            <h1 class="text-4xl md:text-7xl font-[900] leading-[1] tracking-tighter text-gray-900 mb-6 uppercase">
+                Faça sua primeira venda no TikTok Shop em <span class="text-[#ff0050]">1 Dia</span>, mesmo começando do zero
+            </h1>
+            <p class="text-lg md:text-xl text-gray-500 font-bold mb-8 max-w-2xl mx-auto leading-tight">
+                Passo a passo simples, clique por clique, para sair do zero no TikTok Shop usando apenas o celular. Sem cursos caros e sem enrolação.
+            </p>
+            
+            <div class="flex flex-col items-center gap-6">
+                <a href="https://go.tribopay.com.br/fd73r8nxti" class="w-full sm:w-auto bg-[#ff0050] text-white px-10 py-5 rounded-2xl font-black text-xl shadow-[0_15px_30px_rgba(255,0,80,0.3)] hover:scale-105 transition-all active:scale-95 flex items-center justify-center gap-2 uppercase">
+                    QUERO MINHA PRIMEIRA VENDA AGORA <i data-lucide="arrow-right"></i>
+                </a>
+                <div class="flex items-center gap-6 opacity-60 grayscale hover:grayscale-0 transition-all text-[10px] font-black uppercase tracking-widest">
+                    <span>Pagamento Seguro</span>
+                    <span>•</span>
+                    <span>Acesso Imediato</span>
+                    <span>•</span>
+                    <span>Garantia de 7 Dias</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. DOR & AGITAÇÃO -->
+    <section class="py-20 px-6 bg-gray-50">
+        <div class="max-w-4xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-12 items-start">
+                <div>
+                    <h2 class="text-3xl font-black text-gray-900 mb-6 leading-tight uppercase">
+                        O TikTok Shop chegou no Brasil e quem começa agora <span class="text-[#00f2ea] underline decoration-[#ff0050] decoration-4 underline-offset-4">sai na frente.</span>
+                    </h2>
+                    <p class="text-gray-600 mb-8 font-semibold italic">
+                        Enquanto você espera, milhares de pessoas já estão lucrando com o celular em 2026.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4 bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                            <div class="h-8 w-8 rounded-full bg-red-50 flex items-center justify-center text-red-600"><i data-lucide="alert-circle"></i></div>
+                            <span class="font-bold text-gray-700 text-sm uppercase">Não sabe por onde começar</span>
+                        </div>
+                        <div class="flex items-center gap-4 bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                            <div class="h-8 w-8 rounded-full bg-red-50 flex items-center justify-center text-red-600"><i data-lucide="alert-circle"></i></div>
+                            <span class="font-bold text-gray-700 text-sm uppercase">Medo de errar e perder tempo</span>
+                        </div>
+                        <div class="flex items-center gap-4 bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                            <div class="h-8 w-8 rounded-full bg-red-50 flex items-center justify-center text-red-600"><i data-lucide="alert-circle"></i></div>
+                            <span class="font-bold text-gray-700 text-sm uppercase">Falta de dinheiro para cursos caros</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-black text-white p-8 rounded-[2rem] shadow-2xl relative">
+                    <div class="absolute -top-4 -right-4 bg-[#00f2ea] text-black px-4 py-1 rounded-lg text-xs font-black rotate-3 uppercase">
+                        2026 FATURAMENTO REAL
+                    </div>
+                    <p class="text-xs font-bold text-gray-400 mb-4 uppercase tracking-widest">Saldo disponível para saque:</p>
+                    <div class="text-4xl font-black text-[#00f2ea] mb-6">R$ 1.482,90</div>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center text-xs border-b border-white/10 pb-2">
+                            <span>Comissão Venda #482</span>
+                            <span class="text-green-400 font-bold">+ R$ 42,90</span>
+                        </div>
+                        <div class="flex justify-between items-center text-xs border-b border-white/10 pb-2">
+                            <span>Comissão Venda #481</span>
+                            <span class="text-green-400 font-bold">+ R$ 18,50</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. OFERTAS -->
+    <section id="ofertas" class="py-24 px-6 bg-white">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-black mb-4 uppercase tracking-tighter">Escolha seu Caminho</h2>
+                <div class="inline-flex items-center justify-center gap-3 bg-white px-6 py-2 rounded-full border border-red-100 text-[#ff0050] font-black shadow-sm text-sm">
+                    <i data-lucide="clock"></i>
+                    <span id="countdown">OFERTA TERMINA EM 15:00</span>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 items-stretch mb-20">
+                <!-- CARD BÁSICO -->
+                <div class="relative flex flex-col p-8 rounded-3xl border-2 border-gray-200 bg-gray-50 transition-all duration-300">
+                    <h3 class="text-xl font-bold mb-2 text-gray-700">Kit Básico</h3>
+                    <div class="mb-6">
+                        <span class="text-sm font-medium text-gray-500 line-through italic">Preço Normal: R$ 97,00</span>
+                        <div class="flex items-baseline gap-1 mt-1">
+                            <span class="text-2xl font-bold">R$</span>
+                            <span class="text-5xl font-black text-gray-800">9,90</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-2 font-bold uppercase tracking-tighter">Pagamento Único</p>
+                    </div>
+                    <div class="p-3 rounded-lg mb-6 text-center text-sm font-bold italic bg-gray-200 text-gray-700">
+                        "Ideal para quem quer começar gastando o mínimo"
+                    </div>
+                    <ul class="space-y-4 mb-8 flex-grow">
+                        <li class="flex items-start gap-3"><i data-lucide="check-circle" class="text-gray-400"></i><span class="text-sm text-gray-600">Guia passo a passo em PDF</span></li>
+                        <li class="flex items-start gap-3"><i data-lucide="check-circle" class="text-gray-400"></i><span class="text-sm text-gray-600">Checklist prático de 13 passos</span></li>
+                        <li class="flex items-start gap-3"><i data-lucide="check-circle" class="text-gray-400"></i><span class="text-sm text-gray-600">Funciona sem CNPJ</span></li>
+                    </ul>
+                    <button onclick="openUpsell()" class="w-full py-4 rounded-2xl font-black text-lg bg-black text-white hover:bg-gray-800 transition-all active:scale-95">
+                        ESCOLHER BÁSICO
+                    </button>
+                </div>
+
+                <!-- CARD PREMIUM -->
+                <div id="oferta-premium" class="relative flex flex-col p-8 rounded-3xl border-2 border-[#ff0050] bg-white shadow-[0_20px_50px_rgba(255,0,80,0.15)] scale-105 z-10 transition-all duration-300">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#ff0050] text-white px-6 py-1.5 rounded-full text-xs font-black animate-pulse tracking-widest uppercase whitespace-nowrap">
+                        RECOMENDADO: MAIS VANTAGEM
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-900">Kit Premium</h3>
+                    <div class="mb-6">
+                        <span class="text-sm font-medium text-gray-500 line-through italic">Preço Normal: R$ 97,00</span>
+                        <div class="flex items-baseline gap-1 mt-1">
+                            <span class="text-2xl font-bold">R$</span>
+                            <span class="text-5xl font-black text-gray-900">32,90</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-2 font-bold uppercase tracking-tighter">Pagamento Único • Vitalício</p>
+                    </div>
+                    <div class="p-3 rounded-lg mb-6 text-center text-sm font-bold italic bg-red-50 text-red-600">
+                        "Ideal para quem quer começar com vantagem total"
+                    </div>
+                    <ul class="space-y-4 mb-8 flex-grow">
+                        <li class="flex items-start gap-3"><i data-lucide="check-circle" class="text-[#ff0050]"></i><span class="text-sm font-semibold">7 VÍDEOS PRONTOS (Copiar e Postar)</span></li>
+                        <li class="flex items-start gap-3"><i data-lucide="check-circle" class="text-[#ff0050]"></i><span class="text-sm font-semibold">Lista de produtos validados</span></li>
+                        <li class="flex items-start gap-3"><i data-lucide="check-circle" class="text-[#ff0050]"></i><span class="text-sm font-semibold">Como vender sem aparecer</span></li>
+                        <li class="flex items-start gap-3"><i data-lucide="check-circle" class="text-[#ff0050]"></i><span class="text-sm font-semibold">Suporte VIP e Atualizações</span></li>
+                    </ul>
+                    <a href="https://go.tribopay.com.br/fd73r8nxti" class="w-full py-4 rounded-2xl font-black text-lg bg-[#ff0050] text-white text-center shadow-lg shadow-red-200 hover:bg-red-600 transition-all active:scale-95">
+                        ESCOLHER PREMIUM
+                    </a>
+                </div>
+            </div>
+
+            <!-- BÔNUS PREMIUM -->
+            <div class="relative overflow-hidden bg-black rounded-[3rem] p-10 md:p-16 text-white shadow-2xl">
+                <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h3 class="text-3xl font-black mb-6 uppercase tracking-tighter flex items-center gap-3">
+                            <i data-lucide="zap" class="text-[#00f2ea]"></i> BÔNUS EXCLUSIVOS PREMIUM
+                        </h3>
+                        <p class="text-gray-400 mb-8 font-bold text-lg">Ao escolher a versão Premium, você leva as ferramentas de quem já vive de TikTok Shop em 2026.</p>
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-3"><i data-lucide="check-circle" class="text-[#00f2ea]"></i><span class="font-bold text-sm uppercase">Lista de Produtos Campeões 2026</span></div>
+                            <div class="flex items-center gap-3"><i data-lucide="check-circle" class="text-[#00f2ea]"></i><span class="font-bold text-sm uppercase">Vídeos 'Dark' Inclusos</span></div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white/10 p-4 rounded-2xl border border-white/10 text-center hover:bg-[#ff0050]/20 transition-colors">
+                            <i data-lucide="trending-up" class="mx-auto mb-2 text-[#ff0050]"></i>
+                            <span class="text-[10px] font-black uppercase">Escala</span>
+                        </div>
+                        <div class="bg-white/10 p-4 rounded-2xl border border-white/10 text-center hover:bg-[#00f2ea]/20 transition-colors">
+                            <i data-lucide="play" class="mx-auto mb-2 text-[#00f2ea]"></i>
+                            <span class="text-[10px] font-black uppercase">Vídeos</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. GARANTIA -->
+    <section class="py-20 px-6 bg-black text-white text-center">
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-white text-black p-12 rounded-[3rem] shadow-2xl relative overflow-hidden">
+                <i data-lucide="shield-check" class="mx-auto text-[#ff0050] mb-8 w-24 h-24"></i>
+                <h2 class="text-4xl font-black mb-4 uppercase">Garantia Incondicional de 7 Dias</h2>
+                <p class="text-gray-600 font-bold max-w-lg mx-auto mb-10 leading-tight">
+                    O risco é zero. Se você acessar o material e sentir que não é para você, basta pedir o reembolso em até 7 dias. Devolvemos seu dinheiro sem perguntas.
+                </p>
+                <div class="flex items-center justify-center gap-2 text-xs font-black uppercase text-gray-400">
+                    <i data-lucide="lock"></i> Pagamento Seguro & Criptografado
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. FINAL CTA -->
+    <section class="py-24 px-6 bg-[#ff0050] text-white text-center">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-4xl md:text-6xl font-black mb-8 uppercase tracking-tighter leading-none">Ainda na dúvida? Sua primeira venda custa menos que um café.</h2>
+            <p class="text-xl mb-12 opacity-90 max-w-2xl mx-auto font-bold uppercase tracking-widest">
+                A oferta de lançamento com 66% de desconto termina hoje. Garanta seu Kit agora.
+            </p>
+            <a href="https://go.tribopay.com.br/fd73r8nxti" class="inline-block bg-white text-[#ff0050] px-12 py-6 rounded-2xl font-black text-2xl shadow-2xl hover:scale-105 transition-transform active:scale-95 uppercase">
+                QUERO FAZER MINHA PRIMEIRA VENDA AGORA
+            </a>
+            <div class="mt-12 flex flex-wrap items-center justify-center gap-8 opacity-80 font-black text-xs uppercase tracking-widest">
+                <span><i data-lucide="check-circle" class="inline mr-1"></i> Acesso Imediato</span>
+                <span><i data-lucide="check-circle" class="inline mr-1"></i> Garantia Total</span>
+                <span><i data-lucide="check-circle" class="inline mr-1"></i> Sem Mensalidade</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-12 px-6 bg-white border-t border-gray-100">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex items-center gap-2">
+                <div class="bg-black text-white p-1 rounded"><i data-lucide="zap"></i></div>
+                <span class="font-black text-xl tracking-tighter uppercase">KIT TIKTOK SHOP</span>
+            </div>
+            <div class="text-xs text-gray-400 font-bold uppercase tracking-widest text-center">
+                &copy; 2026 Kit TikTok Shop em 1 Dia. Produto Digital.
+            </div>
+            <div class="flex gap-6 text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                <a href="#" class="hover:text-black">Termos</a>
+                <a href="#" class="hover:text-black">Privacidade</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts de Lógica -->
+    <script>
+        // Inicializar ícones
+        lucide.createIcons();
+
+        // 1. Data Atual
+        const dateSpan = document.getElementById('current-date');
+        const today = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long' });
+        dateSpan.innerText = today;
+
+        // 2. Cronômetro de 15 minutos
+        let timeLeft = 900;
+        const countdownEl = document.getElementById('countdown');
+        function updateTimer() {
+            const mins = Math.floor(timeLeft / 60);
+            const secs = timeLeft % 60;
+            countdownEl.innerText = `OFERTA TERMINA EM ${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            if (timeLeft > 0) timeLeft--;
+        }
+        setInterval(updateTimer, 1000);
+        updateTimer();
+
+        // 3. Notificações Rotativas
+        const purchases = [
+            { name: "Ricardo S.", location: "Curitiba/PR", action: "acabou de comprar o Kit Premium" },
+            { name: "Mariana L.", location: "Belo Horizonte/MG", action: "garantiu o Kit Premium agora" },
+            { name: "Lucas M.", location: "Salvador/BA", action: "acabou de comprar o Kit Básico" },
+            { name: "Beatriz F.", location: "São Paulo/SP", action: "acabou de comprar o Kit Premium" }
+        ];
+        let currentNotif = 0;
+        const notifEl = document.getElementById('purchase-notification');
+        const notifName = document.getElementById('notif-name');
+        const notifAction = document.getElementById('notif-action');
+
+        function showNotification() {
+            const data = purchases[currentNotif];
+            notifName.innerText = `${data.name} - ${data.location}`;
+            notifAction.innerText = data.action;
+            notifEl.classList.remove('hidden');
+            setTimeout(() => {
+                notifEl.classList.add('hidden');
+                currentNotif = (currentNotif + 1) % purchases.length;
+            }, 5000);
+        }
+
+        setTimeout(showNotification, 3000);
+        setInterval(showNotification, 15000);
+
+        function hideNotification() {
+            notifEl.classList.add('hidden');
+        }
+
+        // 4. Modal de Upsell
+        const upsellModal = document.getElementById('upsell-modal');
+        function openUpsell() {
+            upsellModal.classList.remove('hidden');
+        }
+        function closeUpsell() {
+            upsellModal.classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
